@@ -1,0 +1,74 @@
+﻿@model IEnumerable<GreenSpace.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+    
+
+<body>
+    <div class="main-container">
+        <div class="main-header">
+            <h1>Quản Lý Sản Phẩm</h1>
+            <a asp-area="Admin" asp-controller="Products" asp-action="Create" class="add-button">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+
+        <div class="content-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>TÊN SẢN PHẨM</th>
+                        <th>ẢNH</th>
+                        <th>GIÁ</th>
+                        <th>SỐ LƯỢNG TỒN KHO</th>
+                        <th>HÀNH ĐỘNG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProductId</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <img src="~/@(item.Images.FirstOrDefault()?.ImageUrl ?? "images/no-image.jpg")"
+                                         alt="@item.Name"
+                                         style="width:80px; height:60px; object-fit:cover;"
+                                         onerror="this.src='/images/no-image.png'" />
+                                </td>
+                                <td>@string.Format("{0:N0} VNĐ", @item.Price)</td>
+                                <td>@item.StockQuantity</td>
+                                <td class="action-buttons">
+                                    <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@item.ProductId" class="edit-btn">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <form asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId" method="post" style="display:inline;">
+                                        <button type="submit" class="delete-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="no-data">Không có dữ liệu sản phẩm.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

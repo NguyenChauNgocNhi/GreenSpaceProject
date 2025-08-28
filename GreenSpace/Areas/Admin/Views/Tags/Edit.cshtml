@@ -1,0 +1,118 @@
+﻿@model GreenSpace.Models.Tag
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="modal-content">
+    <h2>Sửa tag</h2>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="control-label">Tên</label>
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-actions">
+            <a asp-action="Index" class="btn btn-cancel">Hủy</a>
+            <button type="submit" class="btn btn-save">Lưu</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@section Styles {
+    <style>
+        .modal-content {
+            background-color: #2e3048;
+            padding: 30px;
+            border-radius: 8px;
+            width: 600px;
+            max-width: 90%;
+            color: #fff;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+            .modal-content h2 {
+                color: #fff;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                color: #d4d4d4;
+            }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #555;
+            background-color: #3f4159;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-info {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #494c65;
+            border: 1px solid #5a5d7c;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-actions {
+            text-align: right;
+            margin-top: 30px;
+        }
+
+            .form-actions a {
+                text-decoration: none;
+            }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .btn-cancel {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .btn-save {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        #modal-container.is-visible {
+            display: flex;
+        }
+    </style>
+}
+
+

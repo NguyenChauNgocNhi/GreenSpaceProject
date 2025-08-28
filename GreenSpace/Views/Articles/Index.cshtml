@@ -1,0 +1,40 @@
+﻿@model IEnumerable<GreenSpace.Models.Article>
+
+@{
+    ViewData["Title"] = "Cẩm nang cây cảnh";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/camNang.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <h2 class="page-title">Cẩm nang cây cảnh</h2>
+        <hr />
+
+        <div class="product-grid">
+            @foreach (var item in Model)
+            {
+                <div class="product-card">
+                    <img src="@item.ThumbnailUrl" alt="@item.Title" />
+                    <h3>
+                        <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">
+                            @item.Title
+                        </a>
+                    </h3>
+                    <p class="text-muted">
+                        @(string.IsNullOrEmpty(item.Content)
+                                            ? "(Không có đoạn mô tả)"
+                                            : item.Content.Substring(0, Math.Min(item.Content.Length, 50)) + "...")
+                </p>
+
+                    <div class="product-actions">
+                        <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id" class="view-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+                        }
+        </div>
+    </div>
+</body>
+

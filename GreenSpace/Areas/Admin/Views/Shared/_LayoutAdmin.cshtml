@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - GreenSpace Admin</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/admin.css" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>GreenSpace Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Articles" asp-action="Index"
+                           class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Articles" ? "active" : "")">
+                            <i class="material-icons">description</i> Articles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Index"
+                           class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Products" ? "active" : "")">
+                            <i class="material-icons">inventory_2</i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Tags" asp-action="Index"
+                           class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Tags" ? "active" : "")">
+                            <i class="material-icons">label</i> Tags
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+                           class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Users" ? "active" : "")">
+                            <i class="material-icons">people</i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Admin" asp-controller="Orders" asp-action="Index"
+                           class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Orders" ? "active" : "")">
+                            <i class="material-icons">shopping_cart</i> Orders
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            @RenderBody()
+        </main>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

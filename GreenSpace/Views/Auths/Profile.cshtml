@@ -1,0 +1,236 @@
+﻿@model GreenSpace.Models.User
+
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+}
+
+<head>
+    <style>
+        .container {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center; 
+        }
+
+        .profile-title {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-body {
+            text-align: left; 
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+            .info-group strong {
+                display: block;
+                font-weight: bold;
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+            .info-group p {
+                margin: 0;
+                padding-left: 10px;
+                color: #333;
+                font-size: 1.1em;
+            }
+
+        .profile-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: #fff;
+            text-align: center;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+        }
+
+            .btn-edit:hover {
+                background-color: #0056b3;
+            }
+
+        .btn-change-password {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+            .btn-change-password:hover {
+                background-color: #e0a800;
+            }
+
+        .btn-logout {
+            background-color: #dc3545;
+        }
+
+            .btn-logout:hover {
+                background-color: #c82333;
+            }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            position: relative;
+            margin: 15% auto;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+        }
+
+            .modal-content h2 {
+                margin-bottom: 10px;
+                color: orangered;
+            }
+
+            .modal-content p {
+                color: black;
+            }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #28c160;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .btn-login:hover {
+                background: #1d9e4b;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="profile-container">
+            <div class="profile-card">
+                <h2 class="profile-title">Thông tin tài khoản</h2>
+                <div class="profile-body">
+                    <div class="info-group">
+                        <strong>Tên hiển thị:</strong>
+                        <p>@Model.DisplayName</p>
+                    </div>
+                    <div class="info-group">
+                        <strong>Email:</strong>
+                        <p>@Model.Email</p>
+                    </div>
+                    <div class="info-group">
+                        <strong>Địa chỉ:</strong>
+                        <p>@(string.IsNullOrEmpty(Model.Address) ? "Chưa cập nhật" : Model.Address)</p>
+                    </div>
+                    <div class="info-group">
+                        <strong>Số điện thoại:</strong>
+                        <p>@(string.IsNullOrEmpty(Model.Phone) ? "Chưa cập nhật" : Model.Phone)</p>
+                    </div>
+                </div>
+                <div class="profile-footer">
+                    <a asp-action="Edit" asp-controller="Auths" asp-route-id="@Model.Id" class="btn btn-edit">Thay đổi thông tin cá nhân</a>
+                    <a href="/Auths/ChangePassword" class="btn btn-change-password">Đổi mật khẩu</a>
+                    <a href="javascript:void(0)" onclick="showLogoutModal()" class="btn btn-logout">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideLogoutModal()">&times;</span>
+            <h2>Đăng xuất</h2>
+            <p>Bạn có chắc chắn muốn đăng xuất?</p>
+            <div style="margin-top: 20px;">
+                <button class="btn-login" onclick="hideLogoutModal()">Hủy</button>
+                <a asp-controller="Auths" asp-action="Logout" class="btn-login" style="background: #dc3545; margin-left: 10px;">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLogoutModal() {
+            document.getElementById("logoutModal").style.display = "block";
+        }
+
+        function hideLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById("logoutModal");
+            if (event.target === modal) {
+                hideLogoutModal();
+            }
+        }
+    </script>
+</body>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}

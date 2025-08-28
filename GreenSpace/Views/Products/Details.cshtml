@@ -1,0 +1,351 @@
+﻿@model GreenSpace.Models.Product
+
+@{
+    ViewData["Title"] = "Xem chi tiết";
+}
+
+<head>
+    <style>
+        .product-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .product-info-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .product-image-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-image-container {
+            width: 100%;
+            max-width: 450px;
+            height: auto; 
+            object-fit: contain;
+        }
+
+        .main-image {
+            width: 400px; 
+            height: auto;
+            object-fit: contain; 
+            border: 1px solid #ddd; 
+            border-radius: 8px;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .img-thumbnail {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+            .img-thumbnail:hover {
+                border-color: #007bff;
+            }
+
+        .product-details-section {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            margin-bottom: 15px;
+        }
+
+        .current-price {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .original-price {
+            font-size: 1.1em;
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+
+        .stock-info {
+            color: #666;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+            .quantity-selector label {
+                font-weight: bold;
+                margin-right: 10px;
+            }
+
+        .form-control.w-auto {
+            width: 80px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-add-cart {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+            .btn-add-cart:hover {
+                background-color: #e2e6ea;
+            }
+
+        .btn-buy-now {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+            .btn-buy-now:hover {
+                background-color: #0056b3;
+            }
+
+        .product-tabs-container {
+            margin-top: 30px;
+        }
+
+        .product-tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tab-button {
+            padding: 15px 25px;
+            border: none;
+            background-color: #f0f2f5;
+            cursor: pointer;
+            font-size: 1em;
+            color: #555;
+            font-weight: bold;
+            transition: color 0.3s, background-color 0.3s;
+            border-radius: 6px 6px 0 0;
+            margin-right: 5px;
+        }
+
+            .tab-button:hover:not(.active) {
+                background-color: #e2e6ea;
+            }
+
+            .tab-button.active {
+                color: #fff;
+                background-color: #28a745; 
+            }
+
+        .tab-content {
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            background-color: #fafafa;
+            min-height: 150px;
+        }
+
+        .tab-pane {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+            .tab-pane.active {
+                display: block;
+            }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .qna-heading {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .qna-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .qna-list li {
+                margin-bottom: 10px;
+                line-height: 1.5;
+                color: #333;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="product-page">
+        <div class="product-info-container">
+            <div class="product-image-section">
+                <div class="main-image-container">
+                    <img id="mainImage" src="~/@(Model.Images.FirstOrDefault()?.ImageUrl ?? "images/no-image.jpg")" alt="@Model.Name" class="img-fluid main-image" />
+                </div>
+                <div class="thumbnail-container d-flex mt-3">
+                    @foreach (var image in Model.Images)
+                    {
+                        <img src="@Url.Content("~/" + image.ImageUrl)" alt="@Model.Name" class="img-thumbnail me-2 thumbnail-img" style="cursor:pointer;" />
+                    }
+                </div>
+            </div>
+            <div class="product-details-section">
+                <h1 class="product-name">@Model.Name</h1>
+                <div class="product-price">
+                    @if (Model.OriginalPrice.HasValue)
+                    {
+                        <span class="original-price">@Model.OriginalPrice?.ToString("N0") VNĐ</span>
+                    }
+                    <span class="current-price">@Model.Price.ToString("N0") VNĐ</span>
+                </div>
+                @if (Model.StockQuantity.HasValue)
+                {
+                    <div class="stock-info mt-3">
+                        Còn lại: @Model.StockQuantity sản phẩm
+                    </div>
+                }
+                <div class="quantity-selector mt-3">
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control d-inline-block w-auto" />
+                </div>
+                <div class="product-actions mt-4">
+                    <button class="btn btn-add-cart">
+                        <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-tabs-container">
+            <div class="product-tabs">
+                <button class="tab-button active" data-tab="description">
+                    <i class="fa fa-info-circle"></i> Đặc điểm của cây
+                </button>
+                <button class="tab-button" data-tab="care">
+                    <i class="fa fa-leaf"></i> Cách chăm sóc cây
+                </button>
+                <button class="tab-button" data-tab="reviews">
+                    <i class="fa fa-star"></i> Đánh giá
+                </button>
+                <button class="tab-button" data-tab="qa">
+                    <i class="fa fa-question-circle"></i> Hỏi đáp
+                </button>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="description">
+                    <p>@Html.Raw(Model.Description)</p>
+                </div>
+                <div class="tab-pane" id="care">
+                    <p>Trống</p>
+                </div>
+                <div class="tab-pane" id="reviews">
+                    <p>Trống</p>
+                </div>
+                <div class="tab-pane" id="qa">
+                    <h3 class="qna-heading">Hỏi Đáp Nhanh</h3>
+                    <ul class="qna-list">
+                        <li>Bao lâu thì cần tưới nước cho cây?</li>
+                        <li>Làm thế nào để biết cây thiếu nước?</li>
+                        <li>Tôi nên đặt cây ở đâu để cây phát triển tốt?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mainImage = document.getElementById("mainImage");
+            const thumbnails = document.querySelectorAll(".thumbnail-img");
+
+            thumbnails.forEach(img => {
+                img.addEventListener("click", function () {
+                    mainImage.src = this.src;   
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttons = document.querySelectorAll(".tab-button");
+            const panes = document.querySelectorAll(".tab-pane");
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    buttons.forEach(b => b.classList.remove("active"));
+                    panes.forEach(p => p.classList.remove("active"));
+
+                    btn.classList.add("active");
+                    document.getElementById(btn.dataset.tab).classList.add("active");
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelector('.btn-add-cart').addEventListener('click', async () => {
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const response = await fetch('/CartItems/Add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ProductId: @Model.ProductId, Quantity: quantity })
+            });
+            const data = await response.json();
+            alert(data.message);
+        });
+    </script>
+</body>

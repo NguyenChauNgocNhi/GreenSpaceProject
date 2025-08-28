@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Xác thực OTP";
+}
+
+<head>
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .reset-password-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .reset-password-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 350px;
+        }
+
+            .reset-password-card h2 {
+                color: black;
+                margin-bottom: 25px;
+                font-weight: bold;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group input {
+                width: 100%;
+                padding: 12px 15px;
+                border: 1px solid #444;
+                background-color: #fff;
+                color: #000;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+                .form-group input::placeholder {
+                    color: #777;
+                }
+
+        .send-otp-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .send-otp-button:hover {
+                background-color: #218838;
+            }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reset-password-container">
+        <div class="reset-password-card">
+            <h2>Xác thực OTP</h2>
+            <form asp-controller="Auths" asp-action="VerifyOtp" method="post">
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Nhập email" required />
+                    <input type="text" name="otp" placeholder="Nhập mã OTP" required />
+                </div>
+                <button type="submit" class="send-otp-button">Xác thực</button>
+            </form>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="error-message">@ViewBag.Error</div>
+            }
+        </div>
+    </div>
+</body>

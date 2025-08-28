@@ -1,0 +1,67 @@
+﻿@model List<GreenSpace.Models.Product>
+
+@{
+    ViewData["Title"] = "Phụ kiện";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+
+<body>
+    <div class="product-page">
+        <aside class="filter-sidebar">
+            <h2>LỌC SẢN PHẨM</h2>
+
+            <form asp-action="GetProducts" asp-controller="Products" method="get">
+                <div class="filter-group">
+                    <h4>Giá</h4>
+                    <div class="price-range">
+                        <span>Từ</span>
+                        <input type="number" name="priceFrom" placeholder="Từ" value="@ViewBag.PriceFrom" />
+                        <span>VNĐ</span>
+                    </div>
+                    <div class="price-range">
+                        <span>Đến</span>
+                        <input type="number" name="priceTo" placeholder="Đến" value="@ViewBag.PriceTo" />
+                        <span>VNĐ</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h3>Loại phụ kiện</h3>
+                    <div class="tags-container">
+                        <label><input type="radio" name="category" value="chau-canh" @(ViewBag.Category == "chau-canh" ? "checked" : "") /> Chậu cảnh</label><br />
+                        <label><input type="radio" name="category" value="dat-trong" @(ViewBag.Category == "dat-trong" ? "checked" : "") /> Đất trồng</label><br />
+                        <label><input type="radio" name="category" value="phan-bon" @(ViewBag.Category == "phan-bon" ? "checked" : "") /> Phân bón</label><br />
+                        <label><input type="radio" name="category" value="binh-tuoi" @(ViewBag.Category == "binh-tuoi" ? "checked" : "") /> Bình tưới</label><br />
+                        <label><input type="radio" name="category" value="dung-cu" @(ViewBag.Category == "dung-cu" ? "checked" : "") /> Dụng cụ chăm sóc</label>
+                    </div>
+                </div>
+
+                <button type="reset" class="btn">Đặt lại</button>
+            </form>
+        </aside>
+
+        <section class="product-list-container">
+            <h2>DANH SÁCH PHỤ KIỆN</h2>
+            @if (Model != null && Model.Any())
+            {
+                <div class="product-grid">
+                    @foreach (var product in Model)
+                    {
+                        <div class="product-card">
+                            <img src="@product.FirstImageUrl" alt="@product.Name" />
+                            <h3>@product.Name</h3>
+                            <p>@string.Format("{0:N0} VNĐ", product.Price)</p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="no-products">Không có sản phẩm nào.</div>
+            }
+        </section>
+    </div>
+</body>

@@ -1,0 +1,183 @@
+﻿@model List<GreenSpace.Models.Product>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<section class="banner-container">
+    <div class="mySlides fade">
+        <img src="~/images/banner1.jpg" alt="Banner 1">
+    </div>
+    <div class="mySlides fade">
+        <img src="~/images/banner2.jpg" alt="Banner 2">
+    </div>
+    <div class="mySlides fade">
+        <img src="~/images/banner3.jpg" alt="Banner 3">
+    </div>
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</section>
+
+<div class="dots-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+
+<div class="product-page">
+    <section class="product-list-container">
+        <h2>DANH SÁCH SẢN PHẨM</h2>
+        @if (Model != null && Model.Any())
+        {
+            <div class="product-grid" id="productGrid">
+                @foreach (var product in Model)
+                {
+                    <div class="product-card">
+                        <img src="~/@(product.Images.FirstOrDefault()?.ImageUrl ?? "images/no-image.jpg")"
+                             alt="@product.Name"
+                             onerror="this.src='/images/no-image.png'" />
+                        <h3>@product.Name</h3>
+                        <p class="price">@string.Format("{0:N0} VNĐ", @product.Price)</p>
+                        @if (product.OriginalPrice.HasValue)
+                        {
+                            <p class="old-price">@string.Format("{0:N0} VNĐ", @product.OriginalPrice)</p>
+                        }
+                        @if (product.OriginalPrice.HasValue && product.Price < product.OriginalPrice.Value)
+                        {
+                            double discount = (1 - (product.Price / product.OriginalPrice.Value)) * 100;
+                            <span class="discount">Giảm - @Math.Round(discount) %</span>
+                        }
+                        <div class="product-actions">
+                            <a href="/Products/Details/@product.ProductId" class="view-btn">Xem</a>
+                            <button class="add-to-cart-btn" data-productid="@product.ProductId">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-products">Không có sản phẩm nào.</div>
+        }
+    </section>             
+</div>
+
+@section Scripts {
+    <script>
+        let slideIndex = 0;
+        let slideshowTimeout;
+
+        showSlides();
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+
+            slideshowTimeout = setTimeout(showSlides, 5000);
+        }
+
+        function plusSlides(n) {
+            clearTimeout(slideshowTimeout);
+            slideIndex += n;
+
+            if (slideIndex > document.getElementsByClassName("mySlides").length) {
+                slideIndex = 1;
+            }
+            if (slideIndex < 1) {
+                slideIndex = document.getElementsByClassName("mySlides").length;
+            }
+            showSpecificSlide(slideIndex);
+        }
+
+        function currentSlide(n) {
+            clearTimeout(slideshowTimeout);
+            slideIndex = n;
+            showSpecificSlide(slideIndex);
+        }
+
+        function showSpecificSlide(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
+            slides[n - 1].style.display = "block";
+            dots[n - 1].className += " active";
+
+            slideshowTimeout = setTimeout(showSlides, 5000);
+        }
+    </script>
+
+    <script>
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const productId = btn.dataset.productid;
+                const quantity = 1;
+                const response = await fetch('/CartItems/Add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ProductId: parseInt(productId), Quantity: quantity })
+                });
+                const data = await response.json();
+                alert(data.message);
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <style>
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        .product-card {
+            flex: 0 0 auto;
+            width: 220px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            width: 220px;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 15px;
+        }
+    </style>
+}
+
+

@@ -1,0 +1,258 @@
+﻿@model GreenSpace.Models.Order
+
+@{
+    ViewData["Title"] = "Thanh toán đơn hàng";
+    var cartItems = ViewBag.CartItems as List<GreenSpace.Models.CartItem>;
+    double totalAmount = ViewBag.TotalAmount;
+    double shippingFee = ViewBag.ShippingFee;
+    double grandTotal = ViewBag.GrandTotal;
+}
+
+<div class="container">
+    <div class="shipping-info">
+        <h2>Địa chỉ giao hàng</h2>
+
+        <form asp-controller="Orders" asp-action="Create" method="post">
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Nhập email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="FullName">Tên người nhận</label>
+                <input asp-for="FullName" class="form-control" placeholder="Tên người nhận" required />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Phone">Số điện thoại</label>
+                <input asp-for="Phone" class="form-control" placeholder="Nhập số điện thoại" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Address">Địa chỉ nhận hàng</label>
+                <textarea asp-for="Address" class="form-control" rows="3" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <p class="shipping-fee">Phí giao hàng: <strong>30,000 VNĐ</strong></p>
+
+            <h3>Phương thức thanh toán</h3>
+            <select class="form-control">
+                <option selected>Thanh toán khi nhận hàng (COD)</option>
+                <option>Chuyển khoản ngân hàng</option>
+            </select>
+
+            <div class="checkout-buttons">
+                <a asp-controller="CartItems" asp-action="Index" class="btn btn-secondary">TRANG TRƯỚC</a>
+                <button type="submit" class="btn btn-success">ĐẶT HÀNG</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="cart-summary">
+        <h2>Chi tiết đơn hàng</h2>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in cartItems)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@(item.Price?.ToString("N0") ?? "0") VNĐ</td>
+                        <td>@item.Quantity</td>
+                        <td>@String.Format("{0:N0} VNĐ", (item.Price ?? 0) * item.Quantity)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="order-totals">
+            <p>Tạm tính: @totalAmount.ToString("N0") VNĐ</p>
+            <p>Phí giao hàng: @shippingFee.ToString("N0") VNĐ</p>
+            <h3>Tổng cộng: @grandTotal.ToString("N0") VNĐ</h3>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 40px auto;
+        font-family: Arial, sans-serif;
+    }
+
+    .shipping-info {
+        flex: 1 1 400px;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+        .shipping-info h2,
+        .shipping-info h3 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+    .shipping-fee {
+        font-size: 16px;
+        color: #555;
+        margin-top: 25px;
+        text-align: right;
+    }
+
+    select.form-control {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%236c757d"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>') no-repeat right 12px center;
+        background-size: 16px;
+        cursor: pointer;
+    }
+    
+    textarea.form-control {
+        font-family: Arial, sans-serif;
+    }
+
+    .checkout-buttons {
+        margin-top: 40px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .cart-summary {
+        flex: 1 1 400px;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .cart-summary h2 {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .cart-table th,
+        .cart-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .cart-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+    .order-totals {
+        text-align: right;
+        font-size: 16px;
+        color: #555;
+    }
+
+        .order-totals h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+        }
+</style>

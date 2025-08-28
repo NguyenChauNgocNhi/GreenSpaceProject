@@ -1,0 +1,120 @@
+﻿.main-container {
+    margin-left:20px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+    .main-header h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+.add-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+    .add-button:hover {
+        background-color: #218838;
+    }
+
+    .add-button .material-icons {
+        font-size: 20px;
+    }
+
+.content-table {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead th {
+    background-color: #f8f9fa;
+    text-align: left;
+    padding: 12px;
+    color: #555;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody td {
+    padding: 12px;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+}
+
+td:first-child {
+    width: 40px;
+    text-align: center;
+}
+
+td:nth-child(2) {
+    width: 15%;
+}
+
+td:nth-child(3) {
+    width: 100px;
+}
+
+td:nth-child(5) {
+    width: 120px;
+}
+
+td:last-child {
+    width: 100px;
+}
+
+.content-text {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+td img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+    .action-buttons a {
+        color: #6c757d;
+        transition: color 0.3s;
+    }
+
+        .action-buttons a:hover {
+            color: #333;
+        }
+
+    .action-buttons .material-icons {
+        font-size: 20px;
+    }

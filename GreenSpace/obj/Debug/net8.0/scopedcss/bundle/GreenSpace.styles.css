@@ -1,0 +1,222 @@
+/* _content/GreenSpace/Views/Shared/_Layout.cshtml.rz.scp.css */
+body[b-8lmbxwm7ov] {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.top-bar[b-8lmbxwm7ov] {
+    background-color: #28c160;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+}
+
+.logo[b-8lmbxwm7ov] {
+    display: flex;
+    align-items: center;
+}
+
+    .logo img[b-8lmbxwm7ov] {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+        background-color: white;
+    }
+
+    .logo span[b-8lmbxwm7ov] {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+.contact[b-8lmbxwm7ov] {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+    .contact i[b-8lmbxwm7ov] {
+        margin-right: 5px;
+    }
+
+.cart-account[b-8lmbxwm7ov] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn[b-8lmbxwm7ov] {
+    background-color: white;
+    color: #28c160;
+    padding: 8px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+    .btn i[b-8lmbxwm7ov] {
+        margin-right: 5px;
+    }
+
+.account[b-8lmbxwm7ov] {
+    position: relative;
+}
+
+    .account .dropdown[b-8lmbxwm7ov] {
+        display: none;
+        position: absolute;
+        background: white;
+        color: black;
+        top: 40px;
+        right: 0;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+        .account .dropdown li[b-8lmbxwm7ov] {
+            padding: 8px 15px;
+        }
+
+            .account .dropdown li a[b-8lmbxwm7ov] {
+                text-decoration: none;
+                color: black;
+            }
+
+    .account:hover .dropdown[b-8lmbxwm7ov] {
+        display: block;
+    }
+
+
+nav[b-8lmbxwm7ov] {
+    background: #1c9430;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+    nav ul[b-8lmbxwm7ov] {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+    }
+
+        nav ul li[b-8lmbxwm7ov] {
+            position: relative;
+        }
+
+            nav ul li a[b-8lmbxwm7ov] {
+                color: white;
+                padding: 15px 20px;
+                display: block;
+                text-decoration: none;
+            }
+
+                nav ul li a.active[b-8lmbxwm7ov], nav ul li a:hover[b-8lmbxwm7ov] {
+                    color: yellow;
+                }
+
+.submenu[b-8lmbxwm7ov] {
+    display: none;
+    position: absolute;
+    background: white;
+    top: 50px;
+    list-style: none;
+    padding: 10px;
+}
+
+nav ul li:hover .submenu[b-8lmbxwm7ov] {
+    display: block;
+}
+
+.search-box[b-8lmbxwm7ov] {
+    display: flex;
+    align-items: center;
+}
+
+    .search-box input[b-8lmbxwm7ov] {
+        padding: 5px;
+    }
+
+.banner img[b-8lmbxwm7ov] {
+    width: 100%;
+}
+
+/* MAIN */
+main[b-8lmbxwm7ov] {
+    display: flex;
+    padding: 20px 40px;
+}
+
+.filter[b-8lmbxwm7ov] {
+    width: 25%;
+}
+
+.products[b-8lmbxwm7ov] {
+    width: 75%;
+}
+
+.product-list[b-8lmbxwm7ov] {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.product[b-8lmbxwm7ov] {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+    .product img[b-8lmbxwm7ov] {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+.price[b-8lmbxwm7ov] {
+    color: #333;
+}
+
+    .price .old[b-8lmbxwm7ov] {
+        text-decoration: line-through;
+        color: gray;
+    }
+
+.discount[b-8lmbxwm7ov] {
+    background: yellow;
+    padding: 5px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* FOOTER */
+footer[b-8lmbxwm7ov] {
+    background: #28a745;
+    color: white;
+    padding: 20px 40px;
+}
+
+.footer-content[b-8lmbxwm7ov] {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .footer-content a[b-8lmbxwm7ov] {
+        color: white;
+        display: block;
+        margin: 5px 0;
+    }
+
+.copy[b-8lmbxwm7ov] {
+    text-align: center;
+    margin-top: 20px;
+}

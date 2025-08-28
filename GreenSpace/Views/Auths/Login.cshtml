@@ -1,0 +1,185 @@
+﻿@model GreenSpace.Models.User
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<head>
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            font-family: sans-serif;
+        }
+
+        .login-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-title {
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #555;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .password-input-group {
+            position: relative;
+        }
+
+        .password-input {
+            padding-right: 50px;
+        }
+
+        .show-password-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #007bff;
+            font-size: 14px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #5e51d9;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+            .login-links a {
+                color: #5e51d9;
+                text-decoration: none;
+            }
+
+                .login-links a:hover {
+                    text-decoration: underline;
+                }
+
+        .home-link {
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+            .home-link a {
+                color: #888;
+                text-decoration: none;
+            }
+
+                .home-link a:hover {
+                    text-decoration: underline;
+                }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 12px;
+            text-align: left;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2 class="login-title">Đăng nhập</h2>
+
+            @if (ViewData["Error"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewData["Error"]
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập</label>
+                    <input asp-for="Username" type="text" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <div class="password-input-group">
+                        <input asp-for="Password" type="password" class="form-control password-input" />
+                        <span class="show-password-btn">Hiện</span>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-login">Đăng nhập</button>
+            </form>
+
+            <div class="login-links">
+                <div class="links-left">
+                    <a href="/Auths/Register">Chưa có tài khoản? Đăng ký</a>
+                </div>
+                <div class="links-right">
+                    <a href="/Auths/SendOtp">Quên mật khẩu?</a>
+                </div>
+            </div>
+
+            <div class="home-link">
+                <a href="/Home/Index">Trở về trang chủ</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.querySelector(".show-password-btn");
+            const passwordInput = document.querySelector(".password-input");
+
+            toggleBtn.addEventListener("click", function () {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    toggleBtn.textContent = "Ẩn";
+                } else {
+                    passwordInput.type = "password";
+                    toggleBtn.textContent = "Hiện";
+                }
+            });
+        });
+    </script>
+</body>

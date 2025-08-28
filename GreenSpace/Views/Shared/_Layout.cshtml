@@ -1,0 +1,238 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using System.Security.Claims
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GreenSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="~/css/_Layout.css"/>
+    @RenderSection("Styles", required: false)
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            text-align: center;
+            position: relative;
+            margin: 15% auto;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+        }
+
+            .modal-content h2 {
+                margin-bottom: 10px;
+                color: orangered;
+            }
+
+            .modal-content p {
+                color: black;
+            }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .btn-login {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #28c160;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .btn-login:hover {
+                background: #1d9e4b;
+            }
+    </style>
+</head>
+<body>
+    @if (!(ViewData["Title"]?.ToString() == "Đăng nhập" || ViewData["Title"]?.ToString() == "Đăng ký"))
+    {
+        <header id="main-header">
+            <div class="top-bar">
+                <div class="logo">
+                    <img src="~/images/logo.jpg" alt="Green Space">
+                    <span>Green Space</span>
+                </div>
+                <div class="group">
+                    <div class="contact">
+                        <i class="fa fa-phone"></i> 0123.456.789
+                    </div>
+                    <div class="cart-account">
+                        <button id="cartBtn">
+                            <i class="fa fa-shopping-cart"></i> Giỏ hàng
+                        </button>
+                        <div class="account">
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <button><i class="fa fa-user"></i> Tài khoản</button>
+                                <ul class="dropdown">
+                                    <li><a href="/Auths/Login">Đăng nhập</a></li>
+                                    <li><a href="/Auths/Register">Đăng ký</a></li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <button><i class="fa fa-user"></i> @User.Identity.Name</button>
+                                <ul class="dropdown">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a href="/Admin/Home">Trang quản trị</a></li>
+                                    }
+                                    <li><a asp-controller="Auths" asp-action="Profile">Trang cá nhân</a></li>
+                                    <li><a asp-controller="Orders" asp-action="Index">Đơn hàng</a></li>
+                                    <li><a href="javascript:void(0)" onclick="showLogoutModal()">Đăng xuất</a></li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="/Home/Index" class="active">Trang chủ</a></li>
+                    <li class="dropdown-menu">
+                        <a href="#">Dịch vụ</a>
+                        <ul class="submenu">
+                            <li><a href="/Home/Service1">Giao hàng tận nơi</a></li>
+                            <li><a href="/Home/Service2">Chính sách đổi trả hàng</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/Articles/Index">Cẩm nang cây cảnh</a></li>
+                    <li><a href="/Home/Accessory">Phụ kiện</a></li>
+                    <li><a href="/Home/Support">Hỗ trợ</a></li>
+                </ul>
+                <div class="search-box">
+                    <form asp-controller="Products" asp-action="Search" method="get">
+                        <input type="text" name="query" placeholder="Tìm kiếm sản phẩm...">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </nav>
+        </header>
+    }
+
+    <main> @RenderBody() </main>
+
+    @if (!(ViewData["Title"]?.ToString() == "Đăng nhập" || ViewData["Title"]?.ToString() == "Đăng ký"))
+    {
+        <footer id="main-footer">
+            <div class="footer-content">
+                <div class="about">
+                    <h4>Green Space</h4>
+                    <p>Chúng tôi chuyên cung cấp các loại cây cảnh chất lượng cao, phụ kiện làm vườn và dịch vụ tư vấn chăm sóc cây.</p>
+                    <p><b>Địa chỉ:</b> Kim Long, Huế</p>
+                    <p><b>Liên hệ:</b> 0123.456.789</p>
+                    <p><b>Giờ làm việc:</b> Thứ 2 - Chủ Nhật: 8h - 20h</p>
+                </div>
+                <div class="social">
+                    <h4>Kết nối với chúng tôi</h4>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+                <div class="links">
+                    <h4>Liên kết hữu ích</h4>
+                    <a href="#">Sản phẩm cây cảnh</a>
+                    <a href="/Articles/Index">Blog cây cảnh</a>
+                    <a href="/Home/Support">Liên hệ chúng tôi</a>
+                </div>
+            </div>
+            <div class="copy">© 2025 Green Space. Tất cả các quyền được bảo lưu.</div>
+        </footer>
+    }
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Thông báo</h2>
+            <p>Vui lòng đăng nhập để sử dụng chức năng này!</p>
+            <a href="/Auths/Login" class="btn-login">Đăng nhập ngay</a>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideLogoutModal()">&times;</span>
+            <h2>Đăng xuất</h2>
+            <p>Bạn có chắc chắn muốn đăng xuất?</p>
+            <div style="margin-top: 20px;">
+                <button class="btn-login" onclick="hideLogoutModal()">Hủy</button>
+                <a asp-controller="Auths" asp-action="Logout" class="btn-login" style="background: #dc3545; margin-left: 10px;">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cartBtn = document.getElementById("cartBtn");
+        const modal = document.getElementById("cartModal");
+        const closeBtn = document.querySelector(".close");
+
+        cartBtn.addEventListener("click", () => {
+            const isAuthenticated = '@User.Identity.IsAuthenticated'.toLowerCase() === "true";
+
+            if (isAuthenticated) {
+                window.location.href = "/CartItems/Index";
+            } else {
+                modal.style.display = "block";
+            }
+        });
+
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+
+    <script>
+        function showLogoutModal() {
+            document.getElementById("logoutModal").style.display = "block";
+        }
+
+        function hideLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById("logoutModal");
+            if (event.target === modal) {
+                hideLogoutModal();
+            }
+        }
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

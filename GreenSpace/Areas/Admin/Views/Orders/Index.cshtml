@@ -1,0 +1,90 @@
+﻿@model IEnumerable<GreenSpace.Models.Order>
+
+@{
+    ViewData["Title"] = "Danh sách đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="main-header">
+            <h1>Danh sách đơn hàng</h1>
+        </div>
+
+        <div class="content-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>MÃ ĐƠN HÀNG</th>
+                        <th>TÊN KHÁCH HÀNG</th>
+                        <th>SỐ ĐIỆN THOẠI</th>
+                        <th>ĐỊA  CHỈ</th>
+                        <th>TỔNG TIỀN</th>
+                        <th>PHÍ SHIP</th>
+                        <th>TÌNH TRẠNG</th>
+                        <th>NGÀY MUA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        int index = 1;
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.OrderCode</td>
+                                <td>@item.FullName</td>
+                                <td>@item.Phone</td>
+                                <td>@item.Address</td>
+                                <td>@string.Format("{0:N0} VNĐ", @item.TotalAmount)</td>
+                                <td>@string.Format("{0:N0} VNĐ", @item.ShippingFee)</td>
+                                <td>
+                                    <form asp-action="UpdateStatus" method="post" style="display:inline-block; margin-left:10px;">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                            @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+                                            {
+                                                string statusText = status switch
+                                                {
+                                                    OrderStatus.Pending => "Chờ xác nhận",
+                                                    OrderStatus.Processing => "Đang xử lý",
+                                                    OrderStatus.Shipped => "Đang giao",
+                                                    OrderStatus.Delivered => "Đã giao",
+                                                    OrderStatus.Cancelled => "Đã hủy",
+                                                    _ => status.ToString()
+                                                };
+
+                                                <option value="@status" selected="@(status.Equals(item.Status) ? "selected" : null)">
+                                                    @statusText
+                                                </option>
+                                            }
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="no-data">Không có dữ liệu đơn hàng.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+        
+
+
