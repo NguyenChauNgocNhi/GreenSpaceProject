@@ -69,6 +69,9 @@ namespace GreenSpace.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            HttpContext.Session.SetInt32("UserId", user.Id);
+            HttpContext.Session.SetString("Username", user.Username);
+
             return RedirectToAction("Index", "Home");
         }
 
