@@ -132,16 +132,12 @@ CREATE TABLE Password_reset_otp (
 ALTER TABLE Password_reset_otp
 ADD UsedAt DATETIME2;
 
-CREATE TABLE Password_reset_otp_seq (
-  next_val BIGINT DEFAULT NULL
-);
 
-INSERT INTO Password_reset_otp_seq (next_val) VALUES (101);
 
 
 
 CREATE TABLE Product (
-    product_id BIGINT PRIMARY KEY,
+    product_id BIGINT IDENTITY(1,1) PRIMARY KEY,
     category NVARCHAR(255),
     created_at DATETIME2(6),
     description NVARCHAR(MAX),
@@ -183,12 +179,6 @@ VALUES	(1, N'images/cay-thuong-xuan.jpg'),
 
 
 
-
-CREATE TABLE Product_seq (
-  next_val BIGINT DEFAULT NULL
-);
-
-INSERT INTO Product_seq (next_val) VALUES (151);
 
 
 
@@ -241,11 +231,7 @@ VALUES	(N'Quận Phú Xuân, TP Huế', '2025-07-07 11:18:28.000000', N'user ng�
 		(N'Bình Định', '2025-07-07 18:24:55.000000', N'Xuân Phong', '2025-05-03', 'xuanphong@gmail.com', '$2a$10$2bE4HoVxjS/xFgq6fkg5S.8chC7nqovudYf3pkfEKX5iS7V4ejQSe', '0132456789', N'Khách hàng', 'xuanphong');
 
 
-CREATE TABLE User_seq (
-  next_val BIGINT DEFAULT NULL
-);
 
-INSERT INTO User_seq (next_val) VALUES (201);
 
 
 ALTER TABLE Articles ADD CONSTRAINT PK_Articles PRIMARY KEY (id);
