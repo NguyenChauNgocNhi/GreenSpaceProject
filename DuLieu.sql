@@ -180,8 +180,6 @@ VALUES	(1, N'images/cay-thuong-xuan.jpg'),
 
 
 
-
-
 CREATE TABLE Tags (
     id BIGINT PRIMARY KEY,
     name NVARCHAR(255) UNIQUE
@@ -229,8 +227,6 @@ CREATE TABLE [User] (
 INSERT INTO [User] (address, create_at, display_name, dob, email, password, phone, role, username) 
 VALUES	(N'Quận Phú Xuân, TP Huế', '2025-07-07 11:18:28.000000', N'user ngọc nhi', '2024-05-16', 'nguyenchaungocnhi04@gmail.com', 'AQAAAAIAAYagAAAAEL7SADIm0767VeqG207oTGgBc6D7uaUvbteXTBpb3Z9pfy1W7g/oznR5zcANsj1J9g==', '0123456789', N'Admin', 'admin'),
 		(N'Bình Định', '2025-07-07 18:24:55.000000', N'Xuân Phong', '2025-05-03', 'xuanphong@gmail.com', '$2a$10$2bE4HoVxjS/xFgq6fkg5S.8chC7nqovudYf3pkfEKX5iS7V4ejQSe', '0132456789', N'Khách hàng', 'xuanphong');
-
-
 
 
 
